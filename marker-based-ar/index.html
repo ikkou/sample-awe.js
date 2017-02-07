@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Marker based AR | Meguro.es #8 Introducing WebAR using awe.js</title>
+<meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0">
+<style type="text/css">
+* {
+	margin: 0;
+	padding: 0;
+}
+#container {
+	position: absolute;
+	left: 0;
+	top: 0;
+	bottom: 0;
+	right: 0;
+	overflow: hidden;
+}
+</style>
+</head>
+<body>
+<div id="container"></div>
+<script src="../lib/awe-v8.js"></script>
+<script src="../lib/awe-loader.js"></script>
+<script>
+  window.addEventListener('load', function() {
+    window.awe.init({
+      device_type: awe.AUTO_DETECT_DEVICE_TYPE,
+      settings: {
+      	container_id: 'container',
+        default_camera_position: { x:0, y:0, z:0 },
+        default_lights:[
+          {
+            id: 'ambient_light',
+            type: 'ambient',
+            color: 0x666666
+          },
+          {
+            id: 'hemi',
+            type: 'hemisphere',
+            color: 0xCCCCCC,
+          },
+        ],
+      },
+      ready: function() {
+        var d = '?_='+Date.now();
+        awe.util.require([
+          {
+            capabilities: ['gum','webgl'],
+            files: [
+              ['../lib/awe-standard-dependencies.js', '../lib/awe-standard.js'+d],
+              ['awe-jsartoolkit-dependencies.js','../lib/plugins/StereoEffect.js', '../lib/plugins/VREffect.js'],
+              ['awe.marker_ar.js'+d,'../lib/plugins/awe.rendering_effects.js'+d]
+            ],
+            success: function() {
+							awe.setup_scene();
+							awe.settings.update({data:{value: 'ar'}, where:{id: 'view_mode'}})
+
+			        awe.pois.add({ id:'jsartoolkit_marker_10', position: { x:0, y:0, z:0 }, visible: false });
+			        awe.projections.add({
+			          id:'marker_projection_1',
+								geometry: { shape: 'cube', x:50, y:50, z:50 },
+                position: { x:0, y:0, z:0 },
+                rotation: { x:0, y:0, z:180 },
+			          material:{ type: 'phong', color: 0xFFFFFF },
+                texture: { path: 'marker-meguro.es.png' },
+                visible: false,
+			        }, { poi_id: 'jsartoolkit_marker_10' });
+
+              awe.pois.add({ id:'jsartoolkit_marker_20', position: { x:0, y:0, z:0 }, visible: false });
+			        awe.projections.add({
+			          id:'marker_projection_2',
+								geometry: { shape: 'sphere', x:50, y:50, z:50 },
+                position: { x:0, y:0, z:0 },
+                rotation: { x:0, y:0, z:180 },
+			          material:{ type: 'phong', color: 0xFFFFFF },
+                texture: { path: 'marker-gotanda.js.png' },
+                visible: false,
+			        }, { poi_id: 'jsartoolkit_marker_20' });
+
+              awe.pois.add({ id:'jsartoolkit_marker_30', position: { x:0, y:0, z:0 }, visible: false });
+			        awe.projections.add({
+			          id:'marker_projection_3',
+								geometry: { shape: 'cylinder', x:50, y:50, z:50 },
+                position: { x:0, y:0, z:0 },
+                rotation: { x:0, y:0, z:180 },
+			          material:{ type: 'phong', color: 0xFFFFFF },
+                texture: { path: 'marker-akatsuki.png' },
+                visible: false,
+			        }, { poi_id: 'jsartoolkit_marker_30' });
+
+              awe.pois.add({ id:'jsartoolkit_marker_40', position: { x:0, y:0, z:0 }, visible: false });
+			        awe.projections.add({
+			          id:'marker_projection_4',
+								geometry: { shape: 'plane', x:50, y:50, z:50 },
+                position: { x:0, y:0, z:0 },
+                rotation: { x:0, y:0, z:180 },
+			          material:{ type: 'phong', color: 0xFFFFFF },
+                texture: { path: 'marker-vrtokyo.png' },
+                visible: false,
+			        }, { poi_id: 'jsartoolkit_marker_40' });
+
+              awe.pois.add({ id:'jsartoolkit_marker_64', position: { x:0, y:0, z:0 }, visible: false });
+              awe.projections.add({
+                id:'marker_projection_5',
+                geometry: { path: 'miku.obj' },
+                material: { path: 'miku.mtl' },
+                position: { x: 0, y: 0, z: 0 },
+                rotation: { x: 270, y: 360, z: 0 },
+                scale: { x: 30, y: 30, z: 30 },
+              }, { poi_id: 'jsartoolkit_marker_64' });
+
+			        awe.plugins.view('render_effects').enable();
+			        awe.plugins.view('jsartoolkit').enable();
+			      },
+          },
+          {
+            capabilities: [],
+            success: function() {
+		          document.body.innerHTML = '<p><a href="https://play.google.com/store/apps/details?id=org.mozilla.firefox">Android版Firefox</a>で閲覧してください。</p>';
+            },
+          },
+        ]);
+      }
+    });
+  });
+</script>
+</body>
+</html>
